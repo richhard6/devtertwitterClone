@@ -1,4 +1,4 @@
-import { colors } from '../../styles/theme';
+import { colors } from '../../styles/theme'
 
 function Button({ children, onClick }) {
   return (
@@ -29,7 +29,7 @@ function Button({ children, onClick }) {
         `}
       </style>
     </>
-  );
+  )
 }
 
-export default Button;
+export default Button

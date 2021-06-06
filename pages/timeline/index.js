@@ -1,5 +1,5 @@
-import React from 'react';
-import Link from 'next/link';
+import React from 'react'
+import Link from 'next/link'
 
 export default function Timeline({ userName }) {
   return (
@@ -9,15 +9,14 @@ export default function Timeline({ userName }) {
         <a>go to home</a>
       </Link>
     </>
-  );
+  )
 }
 
 Timeline.getInitialProps = () => {
   return fetch('http://localhost:3000/api/hello')
     .then((res) => res.json())
     .then((response) => {
-      console.log(response);
-      const { userName } = response;
-      return { userName };
-    });
-};
+      const { userName } = response
+      return { userName }
+    })
+}

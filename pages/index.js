@@ -1,31 +1,33 @@
-import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import Head from 'next/head'
+import { useState, useEffect } from 'react'
 
-import AppLayout from '../components/AppLayout';
-import { colors } from '../styles/theme';
-import Button from '../components/Button';
-import GitHub from '../components/Icons/GitHub';
+import AppLayout from 'components/AppLayout'
+import { colors } from 'styles/theme'
+import Button from 'components/Button'
+import GitHub from 'components/Icons/GitHub'
+import Avatar from 'components/Avatar'
+import Logo from 'components/Icons/Logo'
 
-import { loginWithGitHub, onAuthStateChanged } from '../firebase/client';
+import { loginWithGitHub, onAuthStateChanged } from '../firebase/client'
 
 export default function Home() {
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState(undefined)
 
   useEffect(() => {
-    onAuthStateChanged(setUser);
-  }, []);
+    onAuthStateChanged(setUser)
+  }, [])
 
   const handleClick = () => {
     loginWithGitHub()
       .then((user) => {
-        setUser(user);
+        setUser(user)
       })
       .catch((err) => {
-        console.log(err);
-      });
-  };
+        console.log(err)
+      })
+  }
 
-  console.log(user);
+  console.log(user)
   return (
     <>
       <Head>
@@ -35,7 +37,7 @@ export default function Home() {
       </Head>
       <AppLayout>
         <section>
-          <img src="/picturest.png" alt="" />
+          <Logo width="100" />
           <h1>Devter</h1>
           <h2>Talk about development with developers</h2>
           <div>
@@ -48,8 +50,11 @@ export default function Home() {
               user &&
               user.avatar && (
                 <div>
-                  <img src={user.avatar} alt="user avatar" />
-                  <strong>{user.username}</strong>
+                  <Avatar
+                    src={user.avatar}
+                    alt={user.username}
+                    text={user.username}
+                  />
                 </div>
               )
             )}
@@ -72,6 +77,7 @@ export default function Home() {
         h1 {
           color: ${colors.primary};
           font-weight: 800;
+          font-size: 32px;
           margin-bottom: 16px;
         }
 
@@ -86,5 +92,5 @@ export default function Home() {
         }
       `}</style>
     </>
-  );
+  )
 }
