@@ -1,16 +1,16 @@
 import AppLayout from 'components/AppLayout'
 import Devit from 'components/Devit'
-
+import { fetchLatestDevits } from 'firebase/client'
+import useUser from 'hooks/useUser'
 import { useEffect, useState } from 'react'
 
 function HomePage() {
   const [timeline, setTimeline] = useState([])
+  const user = useUser()
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/status/home_timeline')
-      .then((res) => res.json())
-      .then(setTimeline)
-  }, [])
+    user && fetchLatestDevits().then(setTimeline)
+  }, [user])
   return (
     <>
       <AppLayout>
@@ -18,17 +18,20 @@ function HomePage() {
           <h2>Inicio</h2>
         </header>
         <section>
-          {timeline.map((devit) => {
-            return (
-              <Devit
-                key={devit.id}
-                username={devit.username}
-                avatar={devit.avatar}
-                message={devit.message}
-                id={devit.id}
-              />
-            )
-          })}
+          {timeline.map(
+            ({ userId, id, username, avatar, content, createdAt }) => {
+              return (
+                <Devit
+                  key={id}
+                  username={username}
+                  avatar={avatar}
+                  content={content}
+                  id={userId}
+                  createdAt={createdAt}
+                />
+              )
+            }
+          )}
         </section>
 
         <nav></nav>
@@ -37,6 +40,8 @@ function HomePage() {
       <style jsx>{`
         header {
           align-items: center;
+          background: #fffffaaa;
+          backdrop-filter: blur(5px);
           border-bottom: 1px solid #ccc;
           height: 49px;
           display: flex;
@@ -48,6 +53,7 @@ function HomePage() {
         h2 {
           font-size: 21px;
           font-weight: 800;
+          padding-left: 15px;
         }
 
         section {
@@ -55,8 +61,9 @@ function HomePage() {
         }
 
         nav {
+          background: #fff;
           bottom: 0;
-          border-top: 1px solid #ccc;
+          border-top: 1px solid #eee;
           height: 49px;
           position: sticky;
           width: 100%;

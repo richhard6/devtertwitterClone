@@ -12,13 +12,16 @@ const firebaseConfig = {
 
 !firebase.apps.length && firebase.initializeApp(firebaseConfig)
 
+const db = firebase.firestore()
+
 const mapUserFromFirebaseAuth = (user) => {
-  const { displayName, email, photoURL } = user
+  const { displayName, email, photoURL, uid } = user
 
   return {
     avatar: photoURL,
     username: displayName,
     email,
+    uid,
   }
 }
 
@@ -33,4 +36,35 @@ export const loginWithGitHub = () => {
   const githubProvider = new firebase.auth.GithubAuthProvider()
   return firebase.auth().signInWithPopup(githubProvider)
   // .then(mapUserFromFirebaseAuth); // seria igual a user => mapUserFromFirebaseAuth(user)
+}
+
+export const addDevit = ({ avatar, content, userId, username }) => {
+  return db.collection('devits').add({
+    avatar,
+    content,
+    userId,
+    username,
+    createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+    likesCount: 0,
+    sharedCount: 0,
+  })
+}
+
+export const fetchLatestDevits = () => {
+  return db
+    .collection('devits')
+    .get()
+    .then(({ docs }) => {
+      return docs.map((doc) => {
+        const data = doc.data()
+        const id = doc.id
+        const { createdAt } = data
+
+        return {
+          ...data,
+          id,
+          createdAt: +createdAt.toDate(),
+        }
+      })
+    })
 }
