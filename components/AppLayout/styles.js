@@ -38,6 +38,8 @@ export default css`
     border-radius: 10px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     height: 100%;
+    display: flex;
+    flex-direction: column;
     position: relative;
     width: 100%;
     overflow-y: auto;
