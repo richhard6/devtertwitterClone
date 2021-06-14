@@ -2,6 +2,7 @@ import React from 'react'
 import Devit from 'components/Devit/index'
 import { firestore } from 'firebase/admin'
 import { useRouter } from 'next/router'
+import Nav from 'components/Nav'
 function DevitPage(props) {
   const router = useRouter()
   if (router.isFallback) return 'Loading...'
@@ -9,6 +10,8 @@ function DevitPage(props) {
   return (
     <>
       <Devit {...props} />
+
+      <Nav />
       <style jsx>{`
         div {
           background: red;

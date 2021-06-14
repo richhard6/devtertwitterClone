@@ -1,20 +1,22 @@
 import Devit from 'components/Devit'
-import { fetchLatestDevits } from 'firebase/client'
+import { listenLatestDevits } from 'firebase/client'
 import useUser from 'hooks/useUser'
 import { useEffect, useState } from 'react'
-import Home from 'components/Icons/Home'
-import Search from 'components/Icons/Search'
-
-import Create from 'components/Icons/Create'
-import Link from 'next/link'
-import { colors } from 'styles/theme'
 import Head from 'next/head'
+import Nav from 'components/Nav'
+
 function HomePage() {
   const [timeline, setTimeline] = useState([])
   const user = useUser()
 
   useEffect(() => {
-    user && fetchLatestDevits().then(setTimeline)
+    let unsubscribe
+    if (user) {
+      unsubscribe = listenLatestDevits(setTimeline) // la informacion que devuelve latestdevits es el que queremos mandar a setTimeline
+      // listenLatestDevits(newDevits => setTimeline(newDevits)) es lo mismo
+    }
+
+    return () => unsubscribe && unsubscribe()
   }, [user])
 
   console.log(timeline)
@@ -42,23 +44,7 @@ function HomePage() {
         })}
       </section>
 
-      <nav>
-        <Link href="/home">
-          <a>
-            <Home width={32} height={32} stroke="#09f" />
-          </a>
-        </Link>
-        <Link href="/search">
-          <a>
-            <Search width={32} height={32} stroke="#09f" />
-          </a>
-        </Link>
-        <Link href="/compose/devit">
-          <a>
-            <Create width={32} height={32} stroke="#09f" />
-          </a>
-        </Link>
-      </nav>
+      <Nav />
 
       <style jsx>{`
         header {
@@ -81,34 +67,6 @@ function HomePage() {
 
         section {
           flex: 1;
-        }
-
-        nav {
-          background: #fff;
-          bottom: 0;
-          border-top: 1px solid #eee;
-          height: 49px;
-          position: sticky;
-          width: 100%;
-          display: flex;
-        }
-
-        nav a {
-          align-items: center;
-          display: flex;
-          flex: 1 1 auto;
-          height: 100%;
-          justify-content: center;
-        }
-
-        nav a:hover {
-          background: radial-gradient(#0099ff22 15%, transparent 16%);
-          background-size: 180px 180px;
-          background-position: center;
-        }
-
-        nav a:hover > :global(svg) {
-          stroke: ${colors.primary};
         }
       `}</style>
     </>

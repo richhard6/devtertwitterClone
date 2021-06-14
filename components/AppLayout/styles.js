@@ -43,6 +43,7 @@ export default css`
     position: relative;
     width: 100%;
     overflow-y: auto;
+    justify-content: space-between;
   }
   @media (min-width: ${breakpoints.mobile}) {
     main {
