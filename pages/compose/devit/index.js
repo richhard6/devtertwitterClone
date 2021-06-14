@@ -1,5 +1,6 @@
 import Button from 'components/Button'
 import Avatar from 'components/Avatar'
+import Nav from 'components/Nav'
 import useUser from 'hooks/useUser'
 import { useEffect, useState } from 'react'
 import { addDevit, uploadImage, deleteImage } from 'firebase/client'
@@ -128,7 +129,7 @@ function ComposeTweet() {
           </div>
         </form>
       </section>
-
+      <Nav />
       <style jsx>{`
         div {
           padding: 15px;

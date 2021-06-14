@@ -7,6 +7,7 @@ const serviceAdminCredentials = JSON.parse(
 try {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAdminCredentials),
+    databaseURL: 'https://devter-71b30.firebaseio.com',
   })
 } catch (e) {
   console.log(e)

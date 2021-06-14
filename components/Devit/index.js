@@ -2,18 +2,20 @@ import Avatar from 'components/Avatar'
 import useTimeAgo from 'hooks/useTimeAgo'
 import useDateTimeFormat from 'hooks/useDateTimeFormat'
 import Link from 'next/link'
+import { likeDevit } from 'firebase/client'
+import useUser from 'hooks/useUser'
 
 import { useRouter } from 'next/router'
 function Devit({ avatar, username, content, id, createdAt, img }) {
   const timeago = useTimeAgo(createdAt)
+  const user = useUser()
 
   const createdAtFormated = useDateTimeFormat(createdAt)
   const router = useRouter()
-
-  console.log(id)
   const handleArticleClick = (e) => {
     e.preventDefault()
     router.push(`/status/${id}`)
+    likeDevit(id, user.uid)
   }
 
   return (

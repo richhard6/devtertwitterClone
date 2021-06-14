@@ -48,6 +48,7 @@ export const addDevit = ({ avatar, content, img, userId, username }) => {
     createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
     likesCount: 0,
     sharedCount: 0,
+    likedBy: [],
   })
 }
 
@@ -85,6 +86,60 @@ export const fetchLatestDevits = () => {
       return docs.map((doc) => {
         return mapDevitFromFirebaseToObject(doc)
       })
+    })
+}
+
+export const searchDevits = (content) => {
+  return db
+    .collection('devits')
+    .orderBy('createdAt', 'desc')
+    .where('content', '==', content)
+    .get()
+    .then(({ docs }) => {
+      return docs.map((doc) => {
+        return mapDevitFromFirebaseToObject(doc)
+      })
+    })
+}
+
+export const likeDevit = (devitId, userId) => {
+  const devitsCollection = db.collection('devits').doc(devitId)
+
+  devitsCollection
+    .get()
+    .then((doc) => {
+      const data = doc.data()
+      const { likesCount, likedBy } = data
+      return { likesCount, likedBy }
+    })
+    .then(async (likes) => {
+      let { likesCount, likedBy } = likes
+
+      const checkLike = likedBy.find((uid) => uid === userId)
+
+      console.log(checkLike)
+
+      if (checkLike) {
+        const substractLikeCount = await devitsCollection.update({
+          likesCount: --likesCount,
+        })
+
+        const removeLike = likedBy.filter((id) => id !== userId)
+
+        const removeFromLikedBy = await devitsCollection.update({
+          likedBy: removeLike,
+        })
+
+        return { substractLikeCount, removeFromLikedBy }
+      } else {
+        const addLikeCount = await devitsCollection.update({
+          likesCount: ++likesCount,
+        })
+        const addToLikedBy = await devitsCollection.update({
+          likedBy: [...likedBy, userId],
+        })
+        return { addLikeCount, addToLikedBy }
+      }
     })
 }
 

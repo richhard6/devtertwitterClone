@@ -19,7 +19,6 @@ function HomePage() {
     return () => unsubscribe && unsubscribe()
   }, [user])
 
-  console.log(timeline)
   return (
     <>
       <Head>
