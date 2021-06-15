@@ -14,9 +14,9 @@ export default function useUser() {
     onAuthStateChanged(setUser)
   }, [])
 
-  /*  useEffect(() => {
+  useEffect(() => {
     user === USER_STATES.NOT_LOGGED && router.push('/')
-  }, [user]) redirection removed from now. */
+  }, [user])
 
   return user
 }
