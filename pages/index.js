@@ -7,7 +7,7 @@ import GitHub from 'components/Icons/GitHub'
 import Logo from 'components/Icons/Logo'
 import { useRouter } from 'next/router'
 
-import { loginWithGitHub } from '../firebase/client'
+import { loginWithGitHub, signInAnonymously } from '../firebase/client'
 import useUser, { USER_STATES } from 'hooks/useUser'
 
 export default function Home() {
@@ -19,8 +19,14 @@ export default function Home() {
     user && router.replace('/home')
   }, [user])
 
-  const handleClick = () => {
+  const handleGithubLogin = () => {
     loginWithGitHub().catch((err) => {
+      console.log(err)
+    })
+  }
+
+  const handleAnonymousLogin = () => {
+    signInAnonymously().catch((err) => {
       console.log(err)
     })
   }
@@ -39,10 +45,18 @@ export default function Home() {
         <h2>Talk about development with developers</h2>
         <div>
           {user === USER_STATES.NOT_LOGGED && (
-            <Button onClick={handleClick}>
-              <GitHub fill="#fff" width={24} height={24} />
-              Login with GitHub
-            </Button>
+            <div className="button_container">
+              <Button onClick={handleGithubLogin}>
+                <GitHub fill="#fff" width={24} height={24} />
+                Login with GitHub
+              </Button>
+              <Button
+                className="button_anonymous"
+                onClick={handleAnonymousLogin}
+              >
+                or... Login Anonymously
+              </Button>
+            </div>
           )}
 
           {user === USER_STATES.NOT_KNOWN && <div>loading...</div>}
@@ -52,6 +66,12 @@ export default function Home() {
       <style jsx>{`
         img {
           width: 120px;
+        }
+
+        .button_container {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
         }
 
         section {

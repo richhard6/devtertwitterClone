@@ -37,6 +37,10 @@ export const loginWithGitHub = () => {
   return firebase.auth().signInWithRedirect(githubProvider)
 }
 
+export const signInAnonymously = () => {
+  return firebase.auth().signInAnonymously()
+}
+
 export const addDevit = ({ avatar, content, img, userId, username }) => {
   return db.collection('devits').add({
     avatar,
