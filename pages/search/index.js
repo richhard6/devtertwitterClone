@@ -14,7 +14,6 @@ function SearchPage() {
 
   const handleSubmit = () => {
     searchDevits(devit).then(setSearchedDevits)
-    console.log(searchedDevits)
   }
 
   return (

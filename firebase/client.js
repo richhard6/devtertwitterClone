@@ -34,8 +34,7 @@ export const onAuthStateChanged = (onChange) => {
 
 export const loginWithGitHub = () => {
   const githubProvider = new firebase.auth.GithubAuthProvider()
-  return firebase.auth().signInWithPopup(githubProvider)
-  // .then(mapUserFromFirebaseAuth); // seria igual a user => mapUserFromFirebaseAuth(user)
+  return firebase.auth().signInWithRedirect(githubProvider)
 }
 
 export const addDevit = ({ avatar, content, img, userId, username }) => {

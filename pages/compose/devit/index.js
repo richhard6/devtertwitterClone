@@ -31,8 +31,6 @@ function ComposeTweet() {
 
   const router = useRouter()
 
-  console.log(user)
-
   useEffect(() => {
     if (task) {
       const onProgress = () => {}
