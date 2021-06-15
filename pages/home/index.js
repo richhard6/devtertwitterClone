@@ -28,19 +28,33 @@ function HomePage() {
         <h2>Inicio</h2>
       </header>
       <section>
-        {timeline.map(({ id, img, username, avatar, content, createdAt }) => {
-          return (
-            <Devit
-              key={id}
-              username={username}
-              avatar={avatar}
-              img={img}
-              content={content}
-              id={id}
-              createdAt={createdAt}
-            />
-          )
-        })}
+        {timeline.map(
+          ({
+            id,
+            img,
+            username,
+            avatar,
+            content,
+            createdAt,
+            likesCount,
+            likedBy,
+          }) => {
+            return (
+              <Devit
+                key={id}
+                username={username}
+                avatar={avatar}
+                img={img}
+                content={content}
+                id={id}
+                createdAt={createdAt}
+                likesCount={likesCount}
+                likedBy={likedBy}
+                userId={user.uid}
+              />
+            )
+          }
+        )}
       </section>
 
       <Nav />

@@ -112,35 +112,47 @@ export const likeDevit = (devitId, userId) => {
       const { likesCount, likedBy } = data
       return { likesCount, likedBy }
     })
-    .then(async (likes) => {
-      let { likesCount, likedBy } = likes
+    .then((likes) => {
+      const { likesCount, likedBy } = likes
 
-      const checkLike = likedBy.find((uid) => uid === userId)
-
-      console.log(checkLike)
-
-      if (checkLike) {
-        const substractLikeCount = await devitsCollection.update({
-          likesCount: --likesCount,
-        })
-
-        const removeLike = likedBy.filter((id) => id !== userId)
-
-        const removeFromLikedBy = await devitsCollection.update({
-          likedBy: removeLike,
-        })
-
-        return { substractLikeCount, removeFromLikedBy }
-      } else {
-        const addLikeCount = await devitsCollection.update({
-          likesCount: ++likesCount,
-        })
-        const addToLikedBy = await devitsCollection.update({
-          likedBy: [...likedBy, userId],
-        })
-        return { addLikeCount, addToLikedBy }
-      }
+      return updateLikeCountnArray(
+        likesCount,
+        likedBy,
+        userId,
+        devitsCollection
+      )
     })
+}
+
+const updateLikeCountnArray = async (
+  likesCount,
+  likedBy,
+  userId,
+  devitsCollection
+) => {
+  const checkLike = likedBy.find((uid) => uid === userId)
+
+  if (checkLike) {
+    const substractLikeCount = await devitsCollection.update({
+      likesCount: --likesCount,
+    })
+
+    const removeLike = likedBy.filter((id) => id !== userId)
+
+    const removeFromLikedBy = await devitsCollection.update({
+      likedBy: removeLike,
+    })
+
+    return { substractLikeCount, removeFromLikedBy }
+  } else {
+    const addLikeCount = await devitsCollection.update({
+      likesCount: ++likesCount,
+    })
+    const addToLikedBy = await devitsCollection.update({
+      likedBy: [...likedBy, userId],
+    })
+    return { addLikeCount, addToLikedBy }
+  }
 }
 
 export const uploadImage = (file) => {
