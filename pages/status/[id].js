@@ -26,7 +26,7 @@ export default DevitPage
 // para crear paginas estaticas
 export async function getStaticPaths() {
   return {
-    paths: [{ params: { id: 'AV28WkzcuG2VnGyVw3Mt' } }],
+    paths: [{ params: { id: 'W7sAEyOoxBOqC1GDJ5TrXFwSG8Z2' } }],
     fallback: true,
   }
 }
