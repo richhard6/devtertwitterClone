@@ -1,10 +1,13 @@
-import React from 'react'
 import Devit from 'components/Devit/index'
+import { useEffect, useState } from 'react'
 import { firestore } from 'firebase/admin'
 import { useRouter } from 'next/router'
 import Nav from 'components/Nav'
+import { getCurrentUser } from 'firebase/client'
+
 function DevitPage(props) {
   const router = useRouter()
+
   if (router.isFallback) return 'Loading...'
 
   return (

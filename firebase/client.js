@@ -32,6 +32,12 @@ export const onAuthStateChanged = (onChange) => {
   })
 }
 
+export const getCurrentUser = () => {
+  const user = firebase.auth().currentUser
+
+  return user
+}
+
 export const loginWithGitHub = () => {
   const githubProvider = new firebase.auth.GithubAuthProvider()
   return firebase.auth().signInWithRedirect(githubProvider)

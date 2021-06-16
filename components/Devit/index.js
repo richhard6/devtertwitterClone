@@ -47,10 +47,16 @@ function Devit({
     likeDevit(id, userId)
   }
 
+  const handleAvatarClick = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    router.push(`/user/${userId}`)
+  }
+
   return (
     <>
       <article key={id} onClick={handleArticleClick}>
-        <div className="avatar">
+        <div className="avatar" onClick={handleAvatarClick}>
           <Avatar alt={username} src={avatar} />
         </div>
         <section>
