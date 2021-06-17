@@ -86,6 +86,16 @@ export const listenLatestDevits = (callback) => {
     })
 }
 
+export const getDevit = (id, callback) => {
+  return db
+    .collection('devits')
+    .doc(id)
+    .onSnapshot((snap) => {
+      const newDevits = mapDevitFromFirebaseToObject(snap)
+      callback(newDevits)
+    })
+}
+
 export const fetchLatestDevits = () => {
   return db
     .collection('devits')
@@ -102,7 +112,7 @@ export const searchDevits = (content) => {
   return db
     .collection('devits')
     .orderBy('createdAt', 'desc')
-    .where('content', '==', content)
+    .where('userId', '==', content)
     .get()
     .then(({ docs }) => {
       return docs.map((doc) => {

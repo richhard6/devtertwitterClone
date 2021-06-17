@@ -18,6 +18,7 @@ function Devit({
   likedBy,
   likesCount,
   userId,
+  author,
 }) {
   const [liked, setLiked] = useState(false)
   const timeago = useTimeAgo(createdAt)
@@ -40,7 +41,7 @@ function Devit({
         setLiked(false)
       }
     }
-  }, [likedBy])
+  }, [likedBy, setLiked])
 
   const handleLike = (e) => {
     e.stopPropagation()
@@ -50,7 +51,7 @@ function Devit({
   const handleAvatarClick = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    router.push(`/user/${userId}`)
+    router.push(`/user/${author}`)
   }
 
   return (

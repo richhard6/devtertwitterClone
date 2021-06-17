@@ -28,7 +28,6 @@ function Nav() {
       <style jsx>{`
         nav {
           background: #fff;
-
           bottom: 0;
           border-top: 1px solid #eee;
           height: 49px;

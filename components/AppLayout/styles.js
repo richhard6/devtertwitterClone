@@ -41,7 +41,6 @@ export default css`
     display: flex;
     flex-direction: column;
     position: relative;
-    width: 100%;
     overflow-y: auto;
     justify-content: space-between;
   }

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { addDevit, uploadImage, deleteImage } from 'firebase/client'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import Header from 'components/Header'
 const COMPOSE_STATES = {
   USER_NOT_KNOWN: 0,
   LOADING: 1,
@@ -99,33 +100,36 @@ function ComposeTweet() {
       </Head>
 
       <section className="form-container">
-        {user && (
-          <section className="avatar-container">
-            <Avatar src={user.avatar} />
-          </section>
-        )}
-
-        <form onSubmit={handleSubmit}>
-          <textarea
-            placeholder="what are you thinking...?"
-            onChange={handleChange}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            value={message}
-          ></textarea>
-
-          {imgURL && (
-            <section className="remove-img">
-              <button onClick={deleteFromFirebase}>x</button>
-              <img src={imgURL} />
+        <Header title={'Compose'} />
+        <div className="form-inner">
+          {user && (
+            <section className="avatar-container">
+              <Avatar src={user.avatar} />
             </section>
           )}
 
-          <div>
-            <Button disabled={isButtonDisabled}>Devit</Button>
-          </div>
-        </form>
+          <form onSubmit={handleSubmit}>
+            <textarea
+              placeholder="what are you thinking...?"
+              onChange={handleChange}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              value={message}
+            ></textarea>
+
+            {imgURL && (
+              <section className="remove-img">
+                <button onClick={deleteFromFirebase}>x</button>
+                <img src={imgURL} />
+              </section>
+            )}
+
+            <div>
+              <Button disabled={isButtonDisabled}>Devit</Button>
+            </div>
+          </form>
+        </div>
       </section>
       <Nav />
       <style jsx>{`
@@ -151,6 +155,12 @@ function ComposeTweet() {
         .form-container {
           align-items: flex-start;
           display: flex;
+          flex-direction: column;
+        }
+
+        .form-inner {
+          display: flex;
+          width: 100%;
         }
         .remove-img {
           position: relative;

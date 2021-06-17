@@ -1,25 +1,61 @@
 import Devit from 'components/Devit/index'
 import { useEffect, useState } from 'react'
-import { firestore } from 'firebase/admin'
+// import { firestore } from 'firebase/admin'
 import { useRouter } from 'next/router'
 import Nav from 'components/Nav'
-import { getCurrentUser } from 'firebase/client'
+import useUser from 'hooks/useUser'
 
-function DevitPage(props) {
+import { getDevit } from 'firebase/client'
+import Header from 'components/Header'
+
+// hay que ahcer esta pagina sin server side .
+
+function DevitPage(/* props */) {
   const router = useRouter()
+  const { id } = router.query
+
+  console.log(router)
+
+  const [devit, setDevit] = useState({})
+  const [uid, setUid] = useState({})
+  const user = useUser()
+
+  useEffect(() => {
+    let unsubscribe
+    if (user) {
+      unsubscribe = getDevit(id, setDevit)
+
+      setUid({ userId: user.uid })
+
+      return () => unsubscribe && unsubscribe()
+    }
+  }, [user])
+
+  console.log(devit)
 
   if (router.isFallback) return 'Loading...'
 
   return (
     <>
-      <Devit {...props} />
+      <div>
+        <Header title="Detail" />
+        {devit.createdAt && (
+          <Devit
+            username={devit.username}
+            avatar={devit.avatar}
+            img={devit.img}
+            content={devit.content}
+            id={devit.id}
+            createdAt={devit.createdAt}
+            likesCount={devit.likesCount}
+            likedBy={devit.likedBy}
+            userId={uid.userId}
+          />
+        )}
+      </div>
 
       <Nav />
-      <style jsx>{`
-        div {
-          background: red;
-        }
-      `}</style>
+      <style jsx>{``}</style>
     </>
   )
 }
@@ -27,7 +63,7 @@ function DevitPage(props) {
 export default DevitPage
 
 // para crear paginas estaticas
-export async function getStaticPaths() {
+/* export async function getStaticPaths() {
   return {
     paths: [{ params: { id: 'Q9H0JTU0tJ7LqmFTzatU' } }],
     fallback: true,
@@ -58,7 +94,7 @@ export async function getStaticProps(context) {
       return { props: {} }
     })
 }
-
+ */
 /* 
 export async function getServerSideProps(context) {
   const { params, res } = context

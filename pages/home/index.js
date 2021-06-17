@@ -1,4 +1,5 @@
 import Devit from 'components/Devit'
+import Header from 'components/Header'
 import { listenLatestDevits } from 'firebase/client'
 import useUser from 'hooks/useUser'
 import { useEffect, useState } from 'react'
@@ -24,9 +25,7 @@ function HomePage() {
       <Head>
         <title>Inicio / Devter</title>
       </Head>
-      <header>
-        <h2>Inicio</h2>
-      </header>
+      <Header title={'Inicio'} />
       <section>
         {timeline.map(
           ({
@@ -38,6 +37,7 @@ function HomePage() {
             createdAt,
             likesCount,
             likedBy,
+            userId,
           }) => {
             return (
               <Devit
@@ -51,6 +51,7 @@ function HomePage() {
                 likesCount={likesCount}
                 likedBy={likedBy}
                 userId={user.uid}
+                author={userId}
               />
             )
           }
@@ -60,24 +61,6 @@ function HomePage() {
       <Nav />
 
       <style jsx>{`
-        header {
-          align-items: center;
-          background: #fffffaaa;
-          backdrop-filter: blur(5px);
-          border-bottom: 1px solid #ccc;
-          height: 49px;
-          display: flex;
-          position: sticky;
-          top: 0;
-          width: 100%;
-        }
-
-        h2 {
-          font-size: 21px;
-          font-weight: 800;
-          padding-left: 15px;
-        }
-
         section {
           flex: 1;
         }
