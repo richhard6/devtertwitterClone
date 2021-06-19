@@ -108,16 +108,16 @@ export const fetchLatestDevits = () => {
     })
 }
 
-export const searchDevits = (content) => {
+export const searchDevits = (content, callback) => {
   return db
     .collection('devits')
     .orderBy('createdAt', 'desc')
     .where('userId', '==', content)
-    .get()
-    .then(({ docs }) => {
-      return docs.map((doc) => {
-        return mapDevitFromFirebaseToObject(doc)
-      })
+    .onSnapshot(({ docs }) => {
+      const newDevits = docs.map(mapDevitFromFirebaseToObject)
+
+      //   const newDevits = docs.map(doc => mapDevitFromFirebaseToObject(doc))
+      callback(newDevits)
     })
 }
 

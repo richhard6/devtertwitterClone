@@ -9,7 +9,6 @@ import Header from 'components/Header'
 
 function UserPage() {
   const router = useRouter()
-  // que hacer el snapshot para que sea en tiempo real
   const user = useUser()
 
   const [devits, setDevits] = useState([])
@@ -17,9 +16,13 @@ function UserPage() {
   const { username } = devits[0] || devits
 
   useEffect(() => {
-    searchDevits(id).then(setDevits)
-    console.log(devits)
-  }, [])
+    let unsubscribe
+    if (user) {
+      unsubscribe = searchDevits(id, setDevits)
+
+      return () => unsubscribe && unsubscribe()
+    }
+  }, [user])
 
   console.log(devits)
 
@@ -50,6 +53,7 @@ function UserPage() {
                 createdAt={createdAt}
                 likesCount={likesCount}
                 likedBy={likedBy}
+                userId={user.uid}
               />
             )
           }
